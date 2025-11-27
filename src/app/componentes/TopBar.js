@@ -1,20 +1,41 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Heart, Calendar, MapPin } from "lucide-react";
+import { Heart, Calendar, MapPin, Home, PlusCircle, LogIn } from "lucide-react"; // Ícones do Lucide
+import Link from "next/link";
 
 const EventsPage = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isScrolled, setIsScrolled] = useState(false);
 
-  // Fetch events from the API
+  // Função que verifica a rolagem da página
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // Limpeza do event listener
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  // Fetch de eventos da API
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         const response = await axios.get("http://localhost:8080/api/v1/evento");
         setEvents(response.data);
       } catch (error) {
-        console.error("Error fetching events:", error);
+        console.error("Erro ao buscar eventos:", error);
       } finally {
         setLoading(false);
       }
@@ -23,7 +44,6 @@ const EventsPage = () => {
     fetchEvents();
   }, []);
 
-  // Component for rendering individual event cards
   const EventCard = ({ event, isHighlighted }) => {
     return (
       <div
@@ -69,7 +89,46 @@ const EventsPage = () => {
   }
 
   return (
-    <div className="bg-blue-50 min-h-screen p-6">
+    <div className="bg-blue-50 min-h-screen p-6 pt-20">
+      {/* TopBar */}
+      <div
+        className={`fixed top-0 left-0 w-full p-4 z-50 transition-all duration-300 ${
+          isScrolled ? "bg-white shadow-lg" : "bg-transparent"
+        }`}
+      >
+        <div className="max-w-6xl mx-auto flex justify-between items-center">
+          {/* Botão esquerdo (Logo e Redirecionamento para o início) */}
+          <div className="flex items-center space-x-2">
+            <Link href="/" passHref>
+              <div className="text-xl font-semibold text-gray-800 hover:text-blue-500 flex items-center space-x-2">
+                <Home size={20} />
+                <span>Events Manager</span>
+              </div>
+            </Link>
+          </div>
+
+          {/* Botão central (Cadastrar Evento) */}
+          <div>
+            <Link href="/evento/create" passHref>
+              <div className="text-sm font-medium text-blue-500 hover:text-blue-600 flex items-center space-x-1">
+                <PlusCircle size={20} />
+                <span>Cadastrar Evento</span>
+              </div>
+            </Link>
+          </div>
+
+          {/* Botão direito (Entrar) */}
+          <div>
+            <Link href="/login" passHref>
+              <div className="text-sm font-medium text-blue-500 hover:text-blue-600 flex items-center space-x-1">
+                <LogIn size={20} />
+                <span>Entrar</span>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </div>
+
       {/* Evento em Destaque */}
       {events.length > 0 && (
         <div className="max-w-3xl mx-auto mb-8">
