@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <TopBar/>
-        <div className="mt-24">
+        <div className="mt-22">
           {children}
         </div>
       </body>

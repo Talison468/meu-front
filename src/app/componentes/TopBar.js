@@ -154,8 +154,6 @@ export default EventsPage;*/
 import { Home, LogIn, PlusCircle } from "lucide-react";
 import Link from "next/link";
 
-
-
 function TopBar() {
   return <div className="fixed top-0 left-0 w-full p-4 z-50 transition-all duration-300 bg-black bg-opacity-50 backdrop-blur-md shadow-md">
     <div className="max-w-6xl mx-auto flex justify-between items-center py-4 px-6">
@@ -194,6 +192,5 @@ function TopBar() {
     </div>
   </div>
 }
-
 
 export default TopBar;
