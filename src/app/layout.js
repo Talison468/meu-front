@@ -24,7 +24,9 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <TopBar/>
-        {children}
+        <div className="mt-24">
+          {children}
+        </div>
       </body>
     </html>
   );

@@ -1,4 +1,4 @@
-"use client";
+/*"use client";
 
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -89,63 +89,111 @@ const EventsPage = () => {
   }
 
   return (
-    <div className="bg-blue-50 min-h-screen p-6 pt-20">
-      {/* TopBar */}
-      <div
-        className={`fixed top-0 left-0 w-full p-4 z-50 transition-all duration-300 ${
-          isScrolled ? "bg-white shadow-lg" : "bg-transparent"
-        }`}
-      >
-        <div className="max-w-6xl mx-auto flex justify-between items-center">
-          {/* Botão esquerdo (Logo e Redirecionamento para o início) */}
-          <div className="flex items-center space-x-2">
-            <Link href="/" passHref>
-              <div className="text-xl font-semibold text-gray-800 hover:text-blue-500 flex items-center space-x-2">
-                <Home size={20} />
-                <span>Events Manager</span>
-              </div>
-            </Link>
-          </div>
-
-          {/* Botão central (Cadastrar Evento) */}
-          <div>
-            <Link href="/evento/create" passHref>
-              <div className="text-sm font-medium text-blue-500 hover:text-blue-600 flex items-center space-x-1">
-                <PlusCircle size={20} />
-                <span>Cadastrar Evento</span>
-              </div>
-            </Link>
-          </div>
-
-          {/* Botão direito (Entrar) */}
-          <div>
-            <Link href="/login" passHref>
-              <div className="text-sm font-medium text-blue-500 hover:text-blue-600 flex items-center space-x-1">
-                <LogIn size={20} />
-                <span>Entrar</span>
-              </div>
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      {/* Evento em Destaque */}
-      {events.length > 0 && (
-        <div className="max-w-3xl mx-auto mb-8">
-          <EventCard event={events[0]} isHighlighted={true} />
-        </div>
-      )}
-
-      {/* Lista de Eventos */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {events.slice(1).map((event) => (
-          <div key={event.id} className="flex justify-center">
-            <EventCard event={event} isHighlighted={false} />
-          </div>
-        ))}
-      </div>
+    <div className="bg-blue-50 min-h-screen p-6 pt-20">*/
+//{/* TopBar */}
+/* <div
+   className={`fixed top-0 left-0 w-full p-4 z-50 transition-all duration-300 ${
+     isScrolled ? "bg-white shadow-lg" : "bg-transparent"
+   }`}
+ >
+   <div className="max-w-6xl mx-auto flex justify-between items-center">*/
+// {/* Botão esquerdo (Logo e Redirecionamento para o início) */}
+/*<div className="flex items-center space-x-2">
+  <Link href="/" passHref>
+    <div className="text-xl font-semibold text-gray-800 hover:text-blue-500 flex items-center space-x-2">
+      <Home size={20} />
+      <span>Events Manager</span>
     </div>
-  );
+  </Link>
+</div>
+*/
+//{/* Botão central (Cadastrar Evento) */}
+/*<div>
+  <Link href="/evento/create" passHref>
+    <div className="text-sm font-medium text-blue-500 hover:text-blue-600 flex items-center space-x-1">
+      <PlusCircle size={20} />
+      <span>Cadastrar Evento</span>
+    </div>
+  </Link>
+</div>*/
+
+// {/* Botão direito (Entrar) */}
+/*<div>
+  <Link href="/login" passHref>
+    <div className="text-sm font-medium text-blue-500 hover:text-blue-600 flex items-center space-x-1">
+      <LogIn size={20} />
+      <span>Entrar</span>
+    </div>
+  </Link>
+</div>
+</div>
+</div>*/
+
+// {/* Evento em Destaque */}
+/* {events.length > 0 && (
+   <div className="max-w-3xl mx-auto mb-8">
+     <EventCard event={events[0]} isHighlighted={true} />
+   </div>
+ )}*/
+
+// {/* Lista de Eventos */}
+/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+   {events.slice(1).map((event) => (
+     <div key={event.id} className="flex justify-center">
+       <EventCard event={event} isHighlighted={false} />
+     </div>
+   ))}
+ </div>
+</div>
+);
 };
 
-export default EventsPage;
+export default EventsPage;*/
+
+"use client";
+import { Home, LogIn, PlusCircle } from "lucide-react";
+import Link from "next/link";
+
+
+
+function TopBar() {
+  return <div className="fixed top-0 left-0 w-full p-4 z-50 transition-all duration-300 bg-black bg-opacity-50 backdrop-blur-md shadow-md">
+    <div className="max-w-6xl mx-auto flex justify-between items-center py-4 px-6">
+
+      {/* LOGO / HOME */}
+      <Link href="/" passHref>
+        <div className="flex items-center gap-2 cursor-pointer group">
+          <Home
+            size={22}
+            className="text-purple-300 group-hover:text-purple-400 transition"
+          />
+          <span className="text-white font-semibold text-lg group-hover:text-purple-300 transition">
+            Events Manager
+          </span>
+        </div>
+      </Link>
+
+      {/* CADASTRAR EVENTO */}
+      <Link href="/evento/create" passHref>
+        <div className="flex items-center gap-2 text-purple-300 hover:text-purple-200 cursor-pointer transition">
+          <PlusCircle size={20} />
+          <span className="font-medium">Cadastrar Evento</span>
+        </div>
+      </Link>
+
+      {/* LOGIN */}
+      <Link href="/login" passHref>
+        <div className="flex items-center gap-2 text-purple-300 hover:text-purple-200 cursor-pointer transition">
+          <LogIn size={20} />
+          <span className="font-medium">Entrar</span>
+        </div>
+      </Link>
+
+      {/* <renderEvent /> */}
+
+    </div>
+  </div>
+}
+
+
+export default TopBar;

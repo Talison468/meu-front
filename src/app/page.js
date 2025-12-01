@@ -60,33 +60,33 @@ const EventsPage = () => {
     );
   };
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen bg-blue-50">
-        <div className="text-blue-500 font-semibold text-lg">Carregando eventos...</div>
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="flex justify-center items-center h-screen bg-blue-50">
+  //       <div className="text-blue-500 font-semibold text-lg">Carregando eventos...</div>
+  //     </div>
+  //   );
+  // }
 
-  return (
-    <div className="bg-blue-50 min-h-screen p-6">
-      {/* Evento em Destaque */}
-      {events.length > 0 && (
-        <div className="max-w-3xl mx-auto mb-8">
-          <EventCard event={events[0]} isHighlighted={true} />
-        </div>
-      )}
+  // return (
+  //   <div className="bg-blue-50 min-h-screen p-6">
+  //     {/* Evento em Destaque */}
+  //     {events.length > 0 && (
+  //       <div className="max-w-3xl mx-auto mb-8">
+  //         <EventCard event={events[0]} isHighlighted={true} />
+  //       </div>
+  //     )}
 
-      {/* Lista de Eventos */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {events.slice(1).map((event) => (
-          <div key={event.id} className="flex justify-center">
-            <EventCard event={event} isHighlighted={false} />
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+  //     {/* Lista de Eventos */}
+  //     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+  //       {events.slice(1).map((event) => (
+  //         <div key={event.id} className="flex justify-center">
+  //           <EventCard event={event} isHighlighted={false} />
+  //         </div>
+  //       ))}
+  //     </div>
+  //   </div>
+  // );
 };
 
 export default EventsPage;
