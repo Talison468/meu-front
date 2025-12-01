@@ -2,7 +2,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { Calendar, MapPin, PlusCircle, Upload } from "lucide-react"; // Ícones do Lucide
+import { PlusCircle } from "lucide-react";
 
 const CreateEventPage = () => {
   const [formData, setFormData] = useState({
@@ -20,33 +20,25 @@ const CreateEventPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
-  // Função para lidar com as mudanças nos campos do formulário
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
     }));
   };
 
-  // Função para lidar com o envio do formulário
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-
-    // Limpeza dos erros anteriores
     setErrors({});
 
     try {
-      // Envio dos dados para o backend
       const response = await axios.post("http://localhost:8080/api/v1/evento", formData);
-
-      // Caso a criação seja bem-sucedida, redireciona para a lista de eventos
       if (response.status === 201) {
         router.push("/events");
       }
     } catch (error) {
-      // Caso haja erro de validação, exibe os erros
       if (error.response && error.response.status === 400) {
         setErrors(error.response.data.errors);
       }
@@ -56,31 +48,57 @@ const CreateEventPage = () => {
   };
 
   return (
-    <div className="bg-blue-50 min-h-screen p-6">
-      <div className="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md">
-        <h1 className="text-2xl font-semibold text-center text-gray-800 mb-6">Criar Evento</h1>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 via-black to-purple-900 text-white px-4">
+    
+      <div
+        className="
+          max-w-3xl mx-auto p-8
+          rounded-2xl shadow-xl
+          bg-white/10 backdrop-blur-xl border border-purple-600/40
+          shadow-[0_0_25px_rgba(138,43,226,0.5)]
+        "
+      >
+        <h1 className="text-4xl font-bold text-center mb-8 tracking-wide">
+          Criar Evento
+        </h1>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Nome do Evento */}
-          <div>
-            <label htmlFor="nome" className="block text-sm font-medium text-gray-700">
-              Nome
-            </label>
-            <input
-              type="text"
-              id="nome"
-              name="nome"
-              value={formData.nome}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Digite o nome do evento"
-            />
-            {errors.nome && <p className="text-red-500 text-sm mt-1">{errors.nome}</p>}
-          </div>
+        <form onSubmit={handleSubmit} className="space-y-5">
+
+          {/* Campos padrões */}
+          {[
+            { id: "nome", label: "Nome", type: "text", placeholder: "Digite o nome do evento" },
+            { id: "local", label: "Local", type: "text", placeholder: "Digite o local" },
+            { id: "linkEvento", label: "Link do Evento", type: "url", placeholder: "URL do evento" },
+            { id: "linkImagem", label: "Link da Imagem", type: "url", placeholder: "URL da imagem" },
+          ].map((field) => (
+            <div key={field.id}>
+              <label htmlFor={field.id} className="text-purple-300 font-medium">
+                {field.label}
+              </label>
+              <input
+                type={field.type}
+                id={field.id}
+                name={field.id}
+                value={formData[field.id]}
+                onChange={handleChange}
+                placeholder={field.placeholder}
+                className="
+                  mt-1 w-full px-4 py-3 rounded-lg
+                  bg-[#0d102d]/60 border border-purple-500/40 text-purple-200
+                  backdrop-blur-md
+                  focus:ring-2 focus:ring-purple-500 focus:outline-none
+                  shadow-[0_0_12px_rgba(128,0,255,0.3)]
+                "
+              />
+              {errors[field.id] && (
+                <p className="text-red-400 text-sm mt-1">{errors[field.id]}</p>
+              )}
+            </div>
+          ))}
 
           {/* Descrição */}
           <div>
-            <label htmlFor="descricao" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="descricao" className="text-purple-300 font-medium">
               Descrição
             </label>
             <textarea
@@ -88,26 +106,39 @@ const CreateEventPage = () => {
               name="descricao"
               value={formData.descricao}
               onChange={handleChange}
-              rows="4"
-              className="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              rows={4}
+              className="
+                mt-1 w-full px-4 py-3 rounded-lg
+                bg-[#0d102d]/60 border border-purple-500/40 text-purple-200
+                backdrop-blur-md
+                focus:ring-2 focus:ring-purple-500
+                shadow-[0_0_12px_rgba(128,0,255,0.3)]
+              "
               placeholder="Digite a descrição do evento"
             />
-            {errors.descricao && <p className="text-red-500 text-sm mt-1">{errors.descricao}</p>}
+            {errors.descricao && (
+              <p className="text-red-400 text-sm mt-1">{errors.descricao}</p>
+            )}
           </div>
 
-          {/* Tipo do Evento */}
+          {/* Tipo */}
           <div>
-            <label htmlFor="tipo" className="block text-sm font-medium text-gray-700">
-              Tipo
+            <label htmlFor="tipo" className="text-purple-300 font-medium">
+              Tipo do Evento
             </label>
             <select
               id="tipo"
               name="tipo"
               value={formData.tipo}
               onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="
+                mt-1 w-full px-4 py-3 rounded-lg
+                bg-[#0d102d]/60 border border-purple-500/40 text-purple-200
+                backdrop-blur
+                focus:ring-2 focus:ring-purple-500
+              "
             >
-              <option value="">Selecione o tipo de evento</option>
+              <option value="">Selecione</option>
               <option value="CONGRESSO">CONGRESSO</option>
               <option value="TREINAMENTO">TREINAMENTO</option>
               <option value="WORKSHOP">WORKSHOP</option>
@@ -116,110 +147,71 @@ const CreateEventPage = () => {
               <option value="HACKATON">HACKATON</option>
               <option value="STARTUP">STARTUP</option>
             </select>
-            
-            {errors.tipo && <p className="text-red-500 text-sm mt-1">{errors.tipo}</p>}
+            {errors.tipo && (
+              <p className="text-red-400 text-sm mt-1">{errors.tipo}</p>
+            )}
           </div>
 
-          {/* Local */}
-          <div>
-            <label htmlFor="local" className="block text-sm font-medium text-gray-700">
-              Local
-            </label>
-            <input
-              type="text"
-              
-              id="local"
-              name="local"
-              value={formData.local}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Digite o local do evento"
-            />
-            
-            {errors.local && <p className="text-red-500 text-sm mt-1">{errors.local}</p>}
+          {/* Datas */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+              <label htmlFor="dataInicio" className="text-purple-300 font-medium">
+                Data de Início
+              </label>
+              <input
+                type="datetime-local"
+                id="dataInicio"
+                name="dataInicio"
+                value={formData.dataInicio}
+                onChange={handleChange}
+                className="
+                  mt-1 w-full px-4 py-3 rounded-lg
+                  bg-[#0d102d]/60 border border-purple-500/40 text-purple-200
+                  focus:ring-2 focus:ring-purple-500
+                "
+              />
+              {errors.dataInicio && (
+                <p className="text-red-400 text-sm mt-1">{errors.dataInicio}</p>
+              )}
+            </div>
+
+            <div>
+              <label htmlFor="dataFinal" className="text-purple-300 font-medium">
+                Data de Finalização
+              </label>
+              <input
+                type="datetime-local"
+                id="dataFinal"
+                name="dataFinal"
+                value={formData.dataFinal}
+                onChange={handleChange}
+                className="
+                  mt-1 w-full px-4 py-3 rounded-lg
+                  bg-[#0d102d]/60 border border-purple-500/40 text-purple-200
+                  focus:ring-2 focus:ring-purple-500
+                "
+              />
+              {errors.dataFinal && (
+                <p className="text-red-400 text-sm mt-1">{errors.dataFinal}</p>
+              )}
+            </div>
           </div>
 
-          {/* Data de Início */}
-          <div>
-            <label htmlFor="dataInicio" className="block text-sm font-medium text-gray-700">
-              Data de Início
-            </label>
-            <input
-              type="datetime-local"
-              id="dataInicio"
-              name="dataInicio"
-              value={formData.dataInicio}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            {errors.dataInicio && <p className="text-red-500 text-sm mt-1">{errors.dataInicio}</p>}
-          </div>
-
-          {/* Data de Finalização */}
-          <div>
-            <label htmlFor="dataFinal" className="block text-sm font-medium text-gray-700">
-              Data de Finalização
-            </label>
-            <input
-              type="datetime-local"
-              id="dataFinal"
-              name="dataFinal"
-              value={formData.dataFinal}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            {errors.dataFinal && <p className="text-red-500 text-sm mt-1">{errors.dataFinal}</p>}
-          </div>
-
-          {/* Link do Evento */}
-          <div>
-            <label htmlFor="linkEvento" className="block text-sm font-medium text-gray-700">
-              Link do Evento
-            </label>
-            <input
-              type="url"
-              id="linkEvento"
-              name="linkEvento"
-              value={formData.linkEvento}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Digite o link do evento"
-            />
-          </div>
-
-          {/* Link da Imagem */}
-          <div>
-            <label htmlFor="linkImagem" className="block text-sm font-medium text-gray-700">
-              Link da Imagem
-            </label>
-            <input
-              type="url"
-              id="linkImagem"
-              name="linkImagem"
-              value={formData.linkImagem}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Digite o link da imagem"
-            />
-          </div>
-
-          {/* Botão de Enviar */}
-          <div className="mt-6 flex justify-center">
+          {/* Botão */}
+          <div className="flex justify-center pt-4">
             <button
               type="submit"
-              className="bg-blue-500 text-white px-6 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               disabled={isSubmitting}
+              className="w-full bg-purple-600 hover:bg-purple-700 transition py-3 rounded-xl flex items-center justify-center gap-2 font-semibold text-lg shadow-xl"
             >
-              {isSubmitting ? (
-                <span>Enviando...</span>
-              ) : (
+              {isSubmitting ? "Enviando..." : (
                 <>
-                  <PlusCircle className="mr-2 inline-block" size={20} />
-                  Criar Evento
+                  <PlusCircle size={20} /> Criar Evento
                 </>
               )}
             </button>
           </div>
+
         </form>
       </div>
     </div>

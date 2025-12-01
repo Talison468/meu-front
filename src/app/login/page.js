@@ -22,7 +22,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md bg-white/10 backdrop-blur-xl p-10 rounded-3xl shadow-2xl border border-white/20 animate-fadeIn">
         
         <h2 className="text-4xl font-bold text-center mb-8 tracking-wide">
-          Entrar no Sistema
+          Entrar
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">

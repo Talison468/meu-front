@@ -66,14 +66,8 @@ const EventsPage = () => {
   };
 
   return (
-    <div
-      className="
-        min-h-screen p-10
-        bg-gradient-to-br from-black via-slate-900 to-cyan-900
-        text-white
-      "
-    >
-      <h1 className="text-4xl font-extrabold mb-10 text-center text-cyan-300 drop-shadow-lg">
+    <div className="min-h-screen p-10 bg-gradient-to-br from-blue-900 via-black to-purple-900 text-white">
+      <h1 className="text-4xl font-bold text-center mb-8 tracking-wide">
         Eventos
       </h1>
 
