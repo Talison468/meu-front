@@ -60,7 +60,7 @@ const CreateUserPage = () => {
 
   return (
     <div className="min-h-screen p-10 bg-gradient-to-br from-black via-[#0b0f2a] to-[#3a0ca3] text-white">
-      <h1 className="text-4xl font-extrabold text-center text-purple-300 mb-8">
+      <h1 className="text-4xl font-bold text-center mb-8 tracking-wide">
         Criar Conta
       </h1>
 

@@ -13,7 +13,6 @@ export default function LoginPage() {
     console.log("Email:", email);
     console.log("Senha:", password);
 
-    // Aqui você conecta com sua API Spring Boot
   };
 
   return (

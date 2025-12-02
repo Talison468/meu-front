@@ -4,6 +4,13 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { PlusCircle } from "lucide-react";
 
+function formatarData(dataLocal) {
+  if (!dataLocal) return "";
+  const [data, hora] = dataLocal.split("T");
+  const [ano, mes, dia] = data.split("-");
+  return `${dia}/${mes}/${ano} ${hora}`;
+}
+
 const CreateEventPage = () => {
   const [formData, setFormData] = useState({
     nome: "",
@@ -34,13 +41,29 @@ const CreateEventPage = () => {
     setErrors({});
 
     try {
-      const response = await axios.post("http://localhost:8080/api/v1/evento", formData);
+      const payload = {
+        ...formData,
+        dataInicio: formatarData(formData.dataInicio),
+        dataFinal: formatarData(formData.dataFinal),
+      };
+
+      const response = await axios.post(
+        "http://localhost:8080/api/v1/evento",
+        payload
+      );
+      
       if (response.status === 201) {
         router.push("/events");
       }
     } catch (error) {
-      if (error.response && error.response.status === 400) {
-        setErrors(error.response.data.errors);
+      const backendErrors = error.response?.data?.errors;
+
+      if (backendErrors) {
+        setErrors(backendErrors);
+      } else {
+        setErrors({
+          geral: "Erro ao conectar com o servidor ou resposta inesperada.",
+        });
       }
     } finally {
       setIsSubmitting(false);
@@ -49,7 +72,6 @@ const CreateEventPage = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 via-black to-purple-900 text-white px-4">
-    
       <div
         className="
           max-w-3xl mx-auto p-8
@@ -63,6 +85,10 @@ const CreateEventPage = () => {
         </h1>
 
         <form onSubmit={handleSubmit} className="space-y-5">
+
+          {errors.geral && (
+            <p className="text-red-400 text-sm mb-3">{errors.geral}</p>
+          )}
 
           {/* Campos padrões */}
           {[
