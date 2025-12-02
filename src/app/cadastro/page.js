@@ -3,18 +3,16 @@
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { Calendar, MapPin, PlusCircle, Upload } from "lucide-react";
 
-const CreateEventPage = () => {
+const CreateUserPage = () => {
   const [formData, setFormData] = useState({
     nome: "",
-    descricao: "",
+    email: "",
+    senha: "",
+    cpf: "",
+    telefone: "",
     tipo: "",
-    local: "",
-    dataInicio: "",
-    dataFinal: "",
-    linkEvento: "",
-    linkImagem: "",
+    dataNascimento: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -22,9 +20,10 @@ const CreateEventPage = () => {
   const router = useRouter();
 
   const handleChange = (e) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [e.target.name]: e.target.value,
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
     }));
   };
 
@@ -34,15 +33,23 @@ const CreateEventPage = () => {
     setErrors({});
 
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/v1/evento",
-        formData
-      );
+      // Enviar dados para a criação de usuário
+      const userResponse = await axios.post("http://localhost:8080/api/v1/usuario", {
+        nome: formData.nome,
+        email: formData.email,
+        senha: formData.senha,
+        cpf: formData.cpf,
+        telefone: formData.telefone,
+        tipo: formData.tipo,
+        dataNascimento: formData.dataNascimento,
+      });
 
-      if (response.status === 201) {
-        router.push("/events");
+      if (userResponse.status === 201) {
+        // Se o usuário for criado com sucesso, redireciona para a página de login ou outra página
+        router.push("/login");  // Redireciona para a página de login
       }
     } catch (error) {
+      // Caso haja erro, exibe os erros de validação
       if (error.response && error.response.status === 400) {
         setErrors(error.response.data.errors);
       }
@@ -52,149 +59,117 @@ const CreateEventPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-blue-900 via-black to-purple-900 text-white px-4">
-      <div className="w-full max-w-3xl bg-white/10 backdrop-blur-xl p-10 rounded-3xl shadow-2xl border border-white/20 animate-fadeIn">
+    <div className="min-h-screen p-10 bg-gradient-to-br from-black via-[#0b0f2a] to-[#3a0ca3] text-white">
+      <h1 className="text-4xl font-extrabold text-center text-purple-300 mb-8">
+        Criar Conta
+      </h1>
 
-        <h1 className="text-4xl font-bold text-center mb-8 tracking-wide">
-          Criar Evento
-        </h1>
+      <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl mx-auto">
+        {/* Campos de Criação de Conta */}
+        <div>
+          <label htmlFor="nome" className="block text-purple-200">Nome</label>
+          <input
+            type="text"
+            id="nome"
+            name="nome"
+            value={formData.nome}
+            onChange={handleChange}
+            className="w-full px-4 py-3 bg-[#0d102d]/60 border border-purple-500/40 text-purple-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+            placeholder="Digite seu nome"
+          />
+        </div>
 
-        <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6">
+        <div>
+          <label htmlFor="email" className="block text-purple-200">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            className="w-full px-4 py-3 bg-[#0d102d]/60 border border-purple-500/40 text-purple-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+            placeholder="Digite seu email"
+          />
+        </div>
 
-          {/* Nome */}
-          <div className="flex flex-col">
-            <label className="text-sm font-semibold mb-1">Nome do Evento</label>
-            <input
-              type="text"
-              name="nome"
-              value={formData.nome}
-              onChange={handleChange}
-              placeholder="Digite o nome"
-              className="bg-white/20 border border-white/30 px-3 py-2 rounded-lg text-white placeholder-gray-300 outline-none focus:ring focus:ring-purple-400"
-            />
-            {errors.nome && <p className="text-red-400 text-sm">{errors.nome}</p>}
-          </div>
+        <div>
+          <label htmlFor="senha" className="block text-purple-200">Senha</label>
+          <input
+            type="password"
+            id="senha"
+            name="senha"
+            value={formData.senha}
+            onChange={handleChange}
+            className="w-full px-4 py-3 bg-[#0d102d]/60 border border-purple-500/40 text-purple-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+            placeholder="Digite sua senha"
+          />
+        </div>
 
-          {/* Descrição */}
-          <div className="flex flex-col">
-            <label className="text-sm font-semibold mb-1">Descrição</label>
-            <textarea
-              name="descricao"
-              value={formData.descricao}
-              onChange={handleChange}
-              rows="4"
-              placeholder="Descrição do evento"
-              className="bg-white/20 border border-white/30 px-3 py-2 rounded-lg text-white placeholder-gray-300 outline-none focus:ring focus:ring-purple-400"
-            />
-            {errors.descricao && <p className="text-red-400 text-sm">{errors.descricao}</p>}
-          </div>
+        <div>
+          <label htmlFor="cpf" className="block text-purple-200">CPF</label>
+          <input
+            type="text"
+            id="cpf"
+            name="cpf"
+            value={formData.cpf}
+            onChange={handleChange}
+            className="w-full px-4 py-3 bg-[#0d102d]/60 border border-purple-500/40 text-purple-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+            placeholder="Digite seu CPF"
+          />
+        </div>
 
-          {/* Tipo */}
-          <div className="flex flex-col">
-            <label className="text-sm font-semibold mb-1">Tipo de Evento</label>
-            <select
-              name="tipo"
-              value={formData.tipo}
-              onChange={handleChange}
-              className="bg-white/20 border border-white/30 px-3 py-2 rounded-lg text-white outline-none focus:ring focus:ring-purple-400"
-            >
-              <option className="text-black" value="">Selecione</option>
-              <option className="text-black" value="CONGRESSO">Congresso</option>
-              <option className="text-black" value="TREINAMENTO">Treinamento</option>
-              <option className="text-black" value="WORKSHOP">Workshop</option>
-              <option className="text-black" value="IMERSÃO">Imersão</option>
-              <option className="text-black" value="REUNIÃO">Reunião</option>
-              <option className="text-black" value="HACKATON">Hackaton</option>
-              <option className="text-black" value="STARTUP">Startup</option>
-            </select>
-            {errors.tipo && <p className="text-red-400 text-sm">{errors.tipo}</p>}
-          </div>
+        <div>
+          <label htmlFor="telefone" className="block text-purple-200">Telefone</label>
+          <input
+            type="text"
+            id="telefone"
+            name="telefone"
+            value={formData.telefone}
+            onChange={handleChange}
+            className="w-full px-4 py-3 bg-[#0d102d]/60 border border-purple-500/40 text-purple-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+            placeholder="Digite seu telefone"
+          />
+        </div>
 
-          {/* Local */}
-          <div className="flex flex-col">
-            <label className="text-sm font-semibold mb-1">Local</label>
-            <input
-              type="text"
-              name="local"
-              value={formData.local}
-              onChange={handleChange}
-              placeholder="Digite o local"
-              className="bg-white/20 border border-white/30 px-3 py-2 rounded-lg text-white placeholder-gray-300 outline-none focus:ring focus:ring-purple-400"
-            />
-            {errors.local && <p className="text-red-400 text-sm">{errors.local}</p>}
-          </div>
+        <div>
+          <label htmlFor="tipo" className="block text-purple-200">Tipo de Usuário</label>
+          <select
+            id="tipo"
+            name="tipo"
+            value={formData.tipo}
+            onChange={handleChange}
+            className="w-full px-4 py-3 bg-[#0d102d]/60 border border-purple-500/40 text-purple-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+          >
+            <option value="">Selecione</option>
+            <option value="ADMIN">Administrador</option>
+            <option value="USUARIO">Usuário</option>
+          </select>
+        </div>
 
-          {/* Data início */}
-          <div className="flex flex-col">
-            <label className="text-sm font-semibold mb-1">Data de Início</label>
-            <input
-              type="datetime-local"
-              name="dataInicio"
-              value={formData.dataInicio}
-              onChange={handleChange}
-              className="bg-white/20 border border-white/30 px-3 py-2 rounded-lg text-white outline-none focus:ring focus:ring-purple-400"
-            />
-            {errors.dataInicio && <p className="text-red-400 text-sm">{errors.dataInicio}</p>}
-          </div>
+        <div>
+          <label htmlFor="dataNascimento" className="block text-purple-200">Data de Nascimento</label>
+          <input
+            type="date"
+            id="dataNascimento"
+            name="dataNascimento"
+            value={formData.dataNascimento}
+            onChange={handleChange}
+            className="w-full px-4 py-3 bg-[#0d102d]/60 border border-purple-500/40 text-purple-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+          />
+        </div>
 
-          {/* Data final */}
-          <div className="flex flex-col">
-            <label className="text-sm font-semibold mb-1">Data de Finalização</label>
-            <input
-              type="datetime-local"
-              name="dataFinal"
-              value={formData.dataFinal}
-              onChange={handleChange}
-              className="bg-white/20 border border-white/30 px-3 py-2 rounded-lg text-white outline-none focus:ring focus:ring-purple-400"
-            />
-            {errors.dataFinal && <p className="text-red-400 text-sm">{errors.dataFinal}</p>}
-          </div>
-
-          {/* Link do evento */}
-          <div className="flex flex-col">
-            <label className="text-sm font-semibold mb-1">Link do Evento</label>
-            <input
-              type="url"
-              name="linkEvento"
-              value={formData.linkEvento}
-              onChange={handleChange}
-              placeholder="https://seuevento.com"
-              className="bg-white/20 border border-white/30 px-3 py-2 rounded-lg text-white placeholder-gray-300 outline-none focus:ring focus:ring-purple-400"
-            />
-          </div>
-
-          {/* Link da imagem */}
-          <div className="flex flex-col">
-            <label className="text-sm font-semibold mb-1">Link da Imagem</label>
-            <input
-              type="url"
-              name="linkImagem"
-              value={formData.linkImagem}
-              onChange={handleChange}
-              placeholder="URL da imagem do evento"
-              className="bg-white/20 border border-white/30 px-3 py-2 rounded-lg text-white placeholder-gray-300 outline-none focus:ring focus:ring-purple-400"
-            />
-          </div>
-
-          {/* Botão enviar */}
+        <div className="flex justify-center mt-8">
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full mt-4 py-3 bg-purple-600 hover:bg-purple-700 transition rounded-xl flex items-center justify-center gap-2 font-semibold text-lg shadow-xl disabled:bg-purple-900"
+            className="bg-purple-600 text-white py-2 px-6 rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
           >
-            {isSubmitting ? (
-              <div className="animate-spin rounded-full h-6 w-6 border-2 border-white border-t-transparent"></div>
-            ) : (
-              <>
-                <PlusCircle size={22} />
-                Criar Evento
-              </>
-            )}
+            {isSubmitting ? "Enviando..." : "Criar Conta"}
           </button>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   );
 };
 
-export default CreateEventPage;
+export default CreateUserPage;
