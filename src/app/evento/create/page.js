@@ -40,18 +40,18 @@ const CreateEventPage = () => {
     setIsSubmitting(true);
     setErrors({});
 
-   try {
+    try {
       const payload = {
         ...formData,
         dataInicio: formatarData(formData.dataInicio),
         dataFinal: formatarData(formData.dataFinal),
       };
-    
+
       const response = await axios.post(
         "http://localhost:8080/api/v1/evento",
         payload
       );
-      
+
       if (response.status === 201) {
         router.push("/events");
       }
@@ -237,7 +237,6 @@ const CreateEventPage = () => {
               )}
             </button>
           </div>
-
         </form>
       </div>
     </div>

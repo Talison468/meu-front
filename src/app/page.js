@@ -27,8 +27,8 @@ const EventsPage = () => {
       <div
         className="
           bg-white/10 backdrop-blur-xl border border-white/20
-          shadow-[0_0_20px_rgba(0,200,255,0.5)]
-          hover:shadow-[0_0_35px_rgba(0,200,255,0.9)]
+          shadow-[0_0_20px_rgba(179,60,245,0.5)]
+          hover:shadow-[0_0_35px_rgba(179,60,245,0.9)]
           hover:scale-[1.03]
           transition-all duration-300
           rounded-2xl overflow-hidden
@@ -41,7 +41,7 @@ const EventsPage = () => {
         />
 
         <div className="p-4">
-          <h3 className="text-2xl font-bold text-cyan-300 drop-shadow">
+          <h3 className="text-2xl font-bold text-purple-300 drop-shadow">
             {event.nome}
           </h3>
 
@@ -49,7 +49,7 @@ const EventsPage = () => {
             {event.descricao}
           </p>
 
-          <div className="flex items-center justify-between mt-4 text-cyan-200">
+          <div className="flex items-center justify-between mt-4 text-purple-200">
             <div className="flex items-center gap-2">
               <Calendar size={18} />
               <span>{new Date(event.dataInicio).toLocaleDateString()}</span>
@@ -60,6 +60,14 @@ const EventsPage = () => {
               <span>{event.local}</span>
             </div>
           </div>
+
+          {/* BOTÃO DE INSCREVER-SE */}
+          <button
+            onClick={() => alert("Inscrito!")}
+            className="bg-purple-600 text-white py-2 px-6 rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 mt-5 flex justify-center"
+          >
+            Inscrever-se
+          </button>
         </div>
       </div>
     );
@@ -72,20 +80,20 @@ const EventsPage = () => {
       </h1>
 
       {loading ? (
-  <p className="text-center text-purple-300 text-lg animate-pulse">
-    Carregando eventos...
-  </p>
-) : events.length === 0 ? (
-  <p className="text-center text-purple-300 text-xl mt-10">
-    Nenhum evento encontrado.
-  </p>
-) : (
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-    {events.map((event, index) => (
-      <EventCard key={index} event={event} />
-    ))}
-  </div>
-)}
+        <p className="text-center text-purple-300 text-lg animate-pulse">
+          Carregando eventos...
+        </p>
+      ) : events.length === 0 ? (
+        <p className="text-center text-purple-300 text-xl mt-10">
+          Nenhum evento encontrado.
+        </p>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {events.map((event, index) => (
+            <EventCard key={index} event={event} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
