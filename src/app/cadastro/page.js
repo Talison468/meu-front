@@ -33,7 +33,6 @@ const CreateUserPage = () => {
     setErrors({});
 
     try {
-      // Enviar dados para a criação de usuário
       const userResponse = await axios.post("http://localhost:8080/api/v1/usuario", {
         nome: formData.nome,
         email: formData.email,
@@ -45,11 +44,8 @@ const CreateUserPage = () => {
       });
 
       if (userResponse.status === 201) {
-        // Se o usuário for criado com sucesso, redireciona para a página de login ou outra página
-        router.push("/login");  // Redireciona para a página de login
       }
     } catch (error) {
-      // Caso haja erro, exibe os erros de validação
       if (error.response && error.response.status === 400) {
         setErrors(error.response.data.errors);
       }
@@ -141,8 +137,9 @@ const CreateUserPage = () => {
             className="w-full px-4 py-3 bg-[#0d102d]/60 border border-purple-500/40 text-purple-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
           >
             <option value="">Selecione</option>
-            <option value="ADMIN">Administrador</option>
-            <option value="USUARIO">Usuário</option>
+            <option value="CLIENTE">Cliente</option>
+            <option value="ORGANIZADOR">Organizador</option>
+            <option value="ADMINISTRADOR">Administrador</option>
           </select>
         </div>
 

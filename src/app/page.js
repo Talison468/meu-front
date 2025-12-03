@@ -66,22 +66,26 @@ const EventsPage = () => {
   };
 
   return (
-    <div className="min-h-screen p-10 bg-gradient-to-br from-blue-900 via-black to-purple-900 text-white">
+    <div className="min-h-screen p-10 bg-gradient-to-br from-blue-900 via-black to-purple-900 text-purple-200">
       <h1 className="text-4xl font-bold text-center mb-8 tracking-wide">
         Eventos
       </h1>
 
       {loading ? (
-        <p className="text-center text-cyan-300 text-lg animate-pulse">
-          Carregando eventos...
-        </p>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {events.map((event, index) => (
-            <EventCard key={index} event={event} />
-          ))}
-        </div>
-      )}
+  <p className="text-center text-purple-300 text-lg animate-pulse">
+    Carregando eventos...
+  </p>
+) : events.length === 0 ? (
+  <p className="text-center text-purple-300 text-xl mt-10">
+    Nenhum evento encontrado.
+  </p>
+) : (
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    {events.map((event, index) => (
+      <EventCard key={index} event={event} />
+    ))}
+  </div>
+)}
     </div>
   );
 };
